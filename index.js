@@ -18,6 +18,8 @@ const port = process.env.PORT || 8080
 app.use(express_layout)
 app.set('view engine','ejs')
 
+app.use(express.urlencoded({extended:false }))
+
 
 const connectDb = require('./connectDB/connect')
 const routes = require('./Router/userRoute')
@@ -37,8 +39,7 @@ if(process.env.NODE_ENV === "development"){
 
 
 
-app.use('/auth',routes)
-
+app.use('/users',routes)
 
 
 
