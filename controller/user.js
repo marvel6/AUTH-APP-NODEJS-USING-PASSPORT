@@ -7,5 +7,8 @@ module.exports = {
 
     userLogin : async(req,res) => {
         res.send('login')
+    },
+    welcome: async(req,res) => {
+        res.render('welcome')
     }
 }
