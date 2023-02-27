@@ -11,6 +11,7 @@ const morgan = require('morgan')
 
 
 
+
 const port = process.env.PORT || 8080
 
 const connectDb = require('./db/connect')
@@ -22,6 +23,7 @@ app.use(expressLayout)
 app.use(express.urlencoded({extended:true}))
 
 app.set('view engine','ejs')
+
 
 app.use(cors())
 app.use(helmet())
