@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 
-
-const userschema = new mongoose.Schema({
-    name:{
+const userSchema = mongoose.Schema({
+    username:{
         type:String,
         required:true
     },
@@ -19,12 +18,8 @@ const userschema = new mongoose.Schema({
         default:Date.now
     }
 
-
 })
 
 
-module.exports = mongoose.model('Users',userschema)
 
-
-
-
+module.exports = mongoose.model('User',userSchema)
