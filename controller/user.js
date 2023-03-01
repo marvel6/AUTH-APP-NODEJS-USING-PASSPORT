@@ -51,8 +51,9 @@ module.exports = {
         }
 
         const user = await User.findOne({ email })
-        
+
         if (user) {
+            errors.push({ msg: 'User already exist, please register with another email' })
             res.render('register', { errors, name, email, password })
         }
 
@@ -64,11 +65,11 @@ module.exports = {
 
         await User.create(newUser)
 
-        setTimeout(() => {
+            req.flash('success_msg','You are now registered , lets begin talking')
+
             res.render('login')
-        }, 2000)
 
-
+      
 
 
 
