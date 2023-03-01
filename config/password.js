@@ -1,12 +1,11 @@
 const localStrtegy = require('passport-local').Strategy
-const mongoose = require('mongoose')
 const User = require('../model/user')
 
 
 module.exports = async (passport) => {
     passport.use(
-        new localStrtegy({ usernameField: 'email' },async(email, password, done) => {
-           await User.findOne({ email: email })
+        new localStrtegy({ usernameField: 'email' }, async (email, password, done) => {
+            await User.findOne({ email: email })
                 .then(async user => {
                     if (!user) {
                         return done(null, false, { message: 'This email is registered' })
@@ -17,9 +16,21 @@ module.exports = async (passport) => {
                     if (comparedPassword) {
                         return done(null, user)
                     } else {
-                        return done(null, false,{message:'password incorrect'})
+                        return done(null, false, { message: 'password incorrect' })
                     }
                 }).catch(err => console.log(err))
         })
     )
+
+
+    passport.serializeUser((user, done) => {
+
+        done(null, user.id)
+    })
+
+    passport.deserializeUser((id, user) => {
+        User.findById(id, (err, user) => {
+            done(err, user)
+        })
+    })
 }

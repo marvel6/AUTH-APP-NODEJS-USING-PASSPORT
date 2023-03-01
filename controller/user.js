@@ -1,4 +1,5 @@
 const User = require('../model/user')
+const passport = require('passport')
 
 
 module.exports = {
@@ -13,9 +14,11 @@ module.exports = {
     },
 
     submitLogin: async (req, res) => {
-        console.log(req.body)
-
-        res.send('hello')
+        passport.authenticate('local', {
+            successRedirect: '/dashbord',
+            failureRedirect: '/user/login',
+            failureFlash: true
+        })(req,res,next);
     },
 
     submitRegister: async (req, res) => {
@@ -65,11 +68,11 @@ module.exports = {
 
         await User.create(newUser)
 
-            req.flash('success_msg','You are now registered , lets begin talking')
+        req.flash('success_msg', 'You are now registered , lets begin talking')
 
-            res.render('login')
+        res.render('login')
 
-      
+
 
 
 

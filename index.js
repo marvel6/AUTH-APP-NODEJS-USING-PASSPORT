@@ -10,7 +10,7 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const flash = require('connect-flash')
 const session = require('express-session')
-
+const passport = require('passport')
 
 
 
@@ -19,6 +19,8 @@ const port = process.env.PORT || 8080
 const connectDb = require('./db/connect')
 const router1 = require('./Router/routers1')
 const router2 = require('./Router/router2')
+require('./config/password')(passport)
+
 
 
 app.use(expressLayout)
@@ -36,6 +38,11 @@ app.use(session({
     saveUninitialized: true,
     resave: true
 }))
+
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 app.use(flash())
 
