@@ -35,6 +35,6 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "node": "^19.6.1"
+   
   }
 }
