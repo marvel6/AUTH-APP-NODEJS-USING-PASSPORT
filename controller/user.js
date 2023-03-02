@@ -16,7 +16,7 @@ module.exports = {
     submitLogin: async (req, res,next) => {
 
         passport.authenticate('local', {
-            successRedirect: '/dashboard',
+            successRedirect: '/api/v1/dashboard',
             failureRedirect: '/users/login',
             failureFlash: true
         })(req, res, next);
@@ -77,5 +77,13 @@ module.exports = {
 
 
 
+    },
+
+    logout : (req,res) => {
+        req.logOut((err)=> {
+
+            if(err) return next(err);
+        })
+        res.redirect('/users/login')
     }
 }
