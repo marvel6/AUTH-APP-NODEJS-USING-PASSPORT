@@ -13,12 +13,13 @@ module.exports = {
         res.render("register")
     },
 
-    submitLogin: async (req, res) => {
+    submitLogin: async (req, res,next) => {
+
         passport.authenticate('local', {
-            successRedirect: '/dashbord',
-            failureRedirect: '/user/login',
+            successRedirect: '/dashboard',
+            failureRedirect: '/users/login',
             failureFlash: true
-        })(req,res,next);
+        })(req, res, next);
     },
 
     submitRegister: async (req, res) => {
