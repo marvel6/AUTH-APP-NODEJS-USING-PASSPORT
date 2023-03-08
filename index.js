@@ -19,9 +19,11 @@ const port = process.env.PORT || 8080
 const connectDb = require('./db/connect')
 const router1 = require('./Router/routers1')
 const router2 = require('./Router/router2')
-require('./config/password')(passport)
+require('./config/passportLocalAuth')(passport)
 
 
+
+app.use(express.static('./public'))
 
 app.use(expressLayout)
 app.use(express.urlencoded({ extended: true }))
@@ -73,7 +75,7 @@ app.use('/users', router2)
 
 const start = async () => {
 
-    await connectDb("mongodb://0.0.0.0:27017/AUTH_NODE")
+    //await connectDb("mongodb://0.0.0.0:27017/AUTH_NODE")
 
     app.listen(port, () => console.log(`App listening on port ${port}`))
 }
