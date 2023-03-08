@@ -8,13 +8,12 @@ module.exports = async (passport) => {
         // clientSecret:process.env.GOOGLE_CLIENT_SECRET,
         // callbackURL:'/auth/google/callback'
 
-    }))
+    }),async(acessToken,refresToken,profile,done) => {
+        
+    })
 
 
 
 
 }
 
-// clientID:process.env.GOOGLE_CLIENT_ID,
-// clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-// callbackURL:'/auth/google/callback'
