@@ -11,6 +11,7 @@ const morgan = require('morgan')
 const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport')
+const mongoStore = require('connect-mongo')
 
 
 
@@ -20,6 +21,7 @@ const connectDb = require('./db/connect')
 const router1 = require('./Router/routers1')
 const router2 = require('./Router/router2')
 require('./config/passportLocalAuth')(passport)
+require('./config/googleAauth')(passport)
 
 
 
@@ -38,7 +40,8 @@ app.use(helmet())
 app.use(session({
     secret: 'B?E(H+MbQeThWmZq4t7w!z%C&F)J@NcR',
     saveUninitialized: true,
-    resave: true
+    resave: false,
+    store:mongoStore.create({mongoUrl:'mongodb://0.0.0.0:27017/AUTH_NODE'})
 }))
 
 
@@ -75,7 +78,7 @@ app.use('/users', router2)
 
 const start = async () => {
 
-    //await connectDb("mongodb://0.0.0.0:27017/AUTH_NODE")
+    await connectDb("mongodb://0.0.0.0:27017/AUTH_NODE")
 
     app.listen(port, () => console.log(`App listening on port ${port}`))
 }
