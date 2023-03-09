@@ -1,31 +1,44 @@
 const User = require('../model/user')
 const passport = require('passport')
 
+
 module.exports = {
-    login: async(req, res) => {
+    login: async (req, res) => {
+
         res.render("login")
+
     },
-    register: async(req, res) => {
+
+    register: async (req, res) => {
         res.render("register")
     },
-    submitLogin: async(req, res, next) => {
+
+    submitLogin: async (req, res,next) => {
+
         passport.authenticate('local', {
             successRedirect: '/api/v1/dashboard',
             failureRedirect: '/users/login',
             failureFlash: true
         })(req, res, next);
     },
-    submitRegister: async(req, res) => {
+
+    submitRegister: async (req, res) => {
+
         const { name, email, password, password2 } = req.body
+
         let errors = [];
 
         if (!name || !email || !password || !password2) {
+
             errors.push({ msg: 'Please provide values for missing fields' })
+
         }
+
 
         if (password !== password2) {
             errors.push({ msg: 'Password mismatch please provide valid result' })
         }
+
 
         if (password.length < 6) {
             errors.push({ msg: 'password must not be less than 6 characters' })
@@ -59,10 +72,16 @@ module.exports = {
         req.flash('success_msg', 'You are now registered , lets begin talking')
 
         res.render('login')
+
+
+
+
+
     },
 
     logout : (req,res) => {
         req.logOut((err)=> {
+
             if(err) return next(err);
         })
         res.redirect('/users/login')

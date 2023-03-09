@@ -7,4 +7,5 @@ const { ensureAuth } = require('../config/auth')
 router.route('/').get(getWelcomePage)
 router.route('/dashboard').get(ensureAuth, dashboard)
 
+
 module.exports = router
