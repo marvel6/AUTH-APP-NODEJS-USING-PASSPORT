@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport')
+const mongoStore = require('connect-mongo')
 
 require('dotenv')
 require('express-async-error')
@@ -16,8 +17,10 @@ const port = process.env.PORT || 8080
 const connectDb = require('./db/connect')
 const router1 = require('./Router/routers1')
 const router2 = require('./Router/router2')
-require('./config/password')(passport)
+require('./config/passportLocalAuth')(passport)
+require('./config/googleAauth')(passport)
 
+app.use(express.static('./public'))
 app.use(expressLayout)
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
@@ -28,7 +31,8 @@ app.set('view engine', 'ejs')
 app.use(session({
     secret: 'B?E(H+MbQeThWmZq4t7w!z%C&F)J@NcR',
     saveUninitialized: true,
-    resave: true
+    resave: false,
+    store:mongoStore.create({mongoUrl:'mongodb://0.0.0.0:27017/AUTH_NODE'})
 }))
 
 app.use(passport.initialize())
