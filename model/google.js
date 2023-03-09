@@ -28,11 +28,6 @@ const googleSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    },
-    user: {
-        type: mongoose.Types.ObjectId,
-        ref: 'User',
-        default: false
     }
 
 

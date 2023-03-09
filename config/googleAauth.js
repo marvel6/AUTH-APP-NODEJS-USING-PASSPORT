@@ -15,7 +15,7 @@ module.exports = async (passport) => {
             displayName: profile.displayName,
             firstName: profile.name.givenName,
             lastName: profile.name.familyName,
-            image: profile[0].value,
+            image: profile.photos[0].value,
             email: profile.emails[0].value
 
         };
@@ -37,6 +37,7 @@ module.exports = async (passport) => {
 
 
         } catch (error) {
+
             console.log(error.message)
         }
 
@@ -44,13 +45,13 @@ module.exports = async (passport) => {
     }))
 
 
- passport.serializeUser((user,done) => {
+    passport.serializeUser((user, done) => {
 
-    done(null,user.id)
- })
+        done(null, user.id)
+    })
 
- passport.deserializeUser((id,done) => {
-    googleUser.findById(id,(err,user) => done(err,user))
- })
+    passport.deserializeUser((id, done) => {
+        googleUser.findById(id, (err, user) => done(err, user))
+    })
 
 }
