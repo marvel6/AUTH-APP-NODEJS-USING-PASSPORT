@@ -1,4 +1,4 @@
-require('dotenv')
+require('dotenv').config()
 require('express-async-error')
 
 const express = require('express')
@@ -20,8 +20,10 @@ const port = process.env.PORT || 8080
 const connectDb = require('./db/connect')
 const router1 = require('./Router/routers1')
 const router2 = require('./Router/router2')
+const googleRoute = require('./Router/google')
 require('./config/passportLocalAuth')(passport)
 require('./config/googleAauth')(passport)
+
 
 
 
@@ -74,6 +76,9 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/api/v1', router1)
 app.use('/users', router2)
+
+
+app.use('/auth',googleRoute)
 
 
 const start = async () => {
