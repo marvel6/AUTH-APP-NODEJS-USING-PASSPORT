@@ -6,11 +6,9 @@ module.exports = {
         res.render("welcome")
     },
     dashboard : async(req,res) => {
-    
-       // const users = await googleUser.find({})
-
 
        res.render("dashboard",)
+
 
        
     }
