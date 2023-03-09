@@ -1,11 +1,9 @@
-<<<<<<< HEAD
 require('dotenv').config()
 require('express-async-error')
 
-=======
->>>>>>> 4ba3946148c7581ce6776853fbf70e81a8b88ded
 const express = require('express')
 const app = express()
+
 const expressLayout = require('express-ejs-layouts')
 const cors = require('cors')
 const helmet = require('helmet')
@@ -15,8 +13,7 @@ const session = require('express-session')
 const passport = require('passport')
 const mongoStore = require('connect-mongo')
 
-require('dotenv')
-require('express-async-error')
+
 
 const port = process.env.PORT || 8080
 
@@ -27,19 +24,18 @@ const googleRoute = require('./Router/google')
 require('./config/passportLocalAuth')(passport)
 require('./config/googleAauth')(passport)
 
-<<<<<<< HEAD
 
+app.use(express.static('./public')) 
 
-
-=======
->>>>>>> 4ba3946148c7581ce6776853fbf70e81a8b88ded
-app.use(express.static('./public'))
 app.use(expressLayout)
 app.use(express.urlencoded({ extended: true }))
+
+app.set('view engine', 'ejs')
+
+
 app.use(cors())
 app.use(helmet())
 
-app.set('view engine', 'ejs')
 
 app.use(session({
     secret: 'B?E(H+MbQeThWmZq4t7w!z%C&F)J@NcR',
@@ -48,42 +44,49 @@ app.use(session({
     store:mongoStore.create({mongoUrl:'mongodb://0.0.0.0:27017/AUTH_NODE'})
 }))
 
+
 app.use(passport.initialize())
 app.use(passport.session())
 
-<<<<<<< HEAD
 
 
 
-=======
->>>>>>> 4ba3946148c7581ce6776853fbf70e81a8b88ded
 app.use(flash())
 
+
 app.use((req, res, next) => {
+
     res.locals.success_msg = req.flash('success_msg')
+
     res.locals.error_msg = req.flash('error_msg')
+
     res.locals.error = req.flash('error')
+    
     next()
 })
 
+
 if (process.env.NODE_ENV === 'development') {
+
     app.use(morgan())
 }
 
+
 //routes
+
 app.use('/api/v1', router1)
 app.use('/users', router2)
 
-<<<<<<< HEAD
 
 app.use('/auth',googleRoute)
 
 
-=======
->>>>>>> 4ba3946148c7581ce6776853fbf70e81a8b88ded
 const start = async () => {
+
     await connectDb("mongodb://0.0.0.0:27017/AUTH_NODE")
+
     app.listen(port, () => console.log(`App listening on port ${port}`))
 }
+
 
 start()
