@@ -1,5 +1,5 @@
 const customError = require('../errors')
-const canditate = require('../model/votingProcess')
+const candidate = require('../model/votingProcess')
 const { StatusCodes } = require('http-status-codes')
 const response = require('../response/response')
 const User = require('../model/userSchema')
@@ -16,7 +16,7 @@ const addCandidateCredentials = async (req, res) => {
         description
     }
 
-    const addCandidate = await canditate.create(newcandidate);
+    const addCandidate = await candidate.create(newcandidate);
 
     res.status(StatusCodes.CREATED).json(response({ msg: `${addCandidate.candidateName} has been added successfully`, data: addCandidate }))
 }
@@ -24,11 +24,12 @@ const addCandidateCredentials = async (req, res) => {
 
 const getCandidates = async (req, res) => {
 
-    let votes = await canditate.find({})
+    let votes = await candidate.find({})
 
     const totalVotes = votes.reduce((accumulator, candidate) => accumulator + candidate.voteCount, 0);
 
     const voteResults = votes.map(vote => {
+
         return {
             id: vote._id,
             label: vote.candidateName,
@@ -45,7 +46,7 @@ const getCandidates = async (req, res) => {
 
 const addVotes = async (req, res) => {
 
-    let voter = await canditate.findOne({ candidateName: req.body.add });
+    let voter = await candidate.findOne({ candidateName: req.body.add });
 
     const user = await User.findOne({ _id: req.user.userId })
 
@@ -74,9 +75,44 @@ const addVotes = async (req, res) => {
 }
 
 
+const updatedCandidateInfo = async (req, res) => {
+
+    const user = await candidate.findById(req.params.id);
+
+    if (!user) {
+        throw new customError.BadRequestError('You cannot update a candiate that is not found')
+    }
+
+    const updateCandidate = await candidate.findByIdAndUpdate(req.params.id, req.body, {
+        runValidators: true,
+        new: true
+    })
+
+    res.status(StatusCodes.OK).json(response({ msg: `Candidate ${updateCandidate.name} information have been updated successfully` }))
+}
+
+
+
+const deleteCandidates = async (req, res) => {
+
+    const votercandidate = await candidate.findById(req.params.id)
+
+    if (!votercandidate) {
+        throw new customError.BadRequestError('You cannot delete a user that is not present')
+    }
+
+    await votercandidate.remove()
+
+    res.status(StatusCodes.OK).json(response({ msg: 'Canditate have been deletede successfully' }))
+
+}
+
+
 
 module.exports = {
     addCandidateCredentials,
+    updatedCandidateInfo,
+    deleteCandidates,
     getCandidates,
     addVotes
 }
