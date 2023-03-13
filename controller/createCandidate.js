@@ -2,6 +2,7 @@ const customError = require('../errors')
 const canditate = require('../model/votingProcess')
 const { StatusCodes } = require('http-status-codes')
 const response = require('../response/response')
+const User = require('../model/userSchema')
 
 
 
@@ -29,6 +30,7 @@ const getCandidates = async (req, res) => {
 
     const voteResults = votes.map(vote => {
         return {
+            id: vote._id,
             label: vote.candidateName,
             percentage: (((100 * vote.voteCount) / totalVotes) || 0).toFixed(0)
         }
@@ -40,7 +42,39 @@ const getCandidates = async (req, res) => {
 }
 
 
-const addVotes = async(req,res) => {
+
+const addVotes = async (req, res) => {
+
+    let voter = await canditate.findOne({ candidateName: req.body.add });
+
+    const user = await User.findOne({ _id: req.user.userId })
+
+    if (!voter) {
+        throw new customError.BadRequestError('Candidate not evaluated please go to safety')
+    }
+
+
+
+    if (user.hasVoted === false) {
+
+        voter.voteCount += 1
+
+        voter.save();
+
+        user.hasVoted = true
+        user.save()
+
+        return res.status(StatusCodes.OK).json(response({ msg: ' congratulations You have casted you vote' }))
+
+    } else if (user.hasVoted === true) {
+
+        return res.status(StatusCodes.OK).json(response({ msg: `Oops, ${user.name} have voted already` }))
+    }
+
+
+
+    res.json('votes added successfully')
+
 
 }
 

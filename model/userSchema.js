@@ -37,7 +37,12 @@ const userSchema = new mongoose.Schema({
     //     type:Boolean,
     //     default:false
     // },
-    verified:Date
+    verified:Date,
+
+    hasVoted:{
+        type:Boolean,
+        default:false
+    }
 })
 
 

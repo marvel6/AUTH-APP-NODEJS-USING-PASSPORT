@@ -34,6 +34,8 @@ if (process.env.NODE_ENV === 'production') {
 
 
 app.use(cookies(process.env.JWT_SECRET))
+app.use(cors())
+app.use(helmet())
 
 //route
 app.use('/api/v1', addCandidateRoute)
