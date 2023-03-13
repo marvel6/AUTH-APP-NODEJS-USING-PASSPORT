@@ -71,11 +71,6 @@ const addVotes = async (req, res) => {
         return res.status(StatusCodes.OK).json(response({ msg: `Oops, ${user.name} have voted already` }))
     }
 
-
-
-    res.json('votes added successfully')
-
-
 }
 
 
